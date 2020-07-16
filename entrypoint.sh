@@ -50,7 +50,6 @@ aws ${PROFILE_OPTION} s3 cp ${S3_URI}/config.yml /etc/cloudwatch-exporter/config
 
 echo "INFO: Starting cloudwatch-exporter..."
 exec java \
-        -Dcom.sun.net.ssl.checkRevocation=false \
         -jar /cloudwatch-exporter.jar \
         9106 \
         /etc/cloudwatch-exporter/config.yml
