@@ -1,24 +1,19 @@
-FROM openjdk:11 as builder
+FROM alpine:3.12.0
 
-ARG CLOUDWATCH_EXPORTER_VERSION=0.8.0
+ARG CLOUDWATCH_EXPORTER_VERSION=0.19.1-alpha
 
-RUN apt-get update -qq && apt-get install -qq maven curl && \
-    curl -k -LSs --output /tmp/cloudwatch-exporter.tar.gz \
-    https://github.com/prometheus/cloudwatch_exporter/archive/cloudwatch_exporter-${CLOUDWATCH_EXPORTER_VERSION}.tar.gz && \
-    tar -C /tmp --strip-components=1 -zoxf /tmp/cloudwatch-exporter.tar.gz && \
-    mvn -f /tmp/pom.xml -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true -Dmaven.wagon.http.ssl.ignore.validity.dates=true package && \
-    mv /tmp/target/cloudwatch_exporter-*-with-dependencies.jar /cloudwatch_exporter.jar
-
-FROM openjdk:11-jre-slim
-
-COPY --from=builder /cloudwatch_exporter.jar /cloudwatch-exporter.jar
 COPY entrypoint.sh /bin/entrypoint.sh
 
-RUN apt-get update && apt-get -qq install awscli && \
+RUN apk add --update --no-cache aws-cli curl && \
+    curl -k -LSs --output /tmp/cloudwatch-exporter.tar.gz \
+    https://github.com/ivx/yet-another-cloudwatch-exporter/releases/download/v${CLOUDWATCH_EXPORTER_VERSION}/yet-another-cloudwatch-exporter_${CLOUDWATCH_EXPORTER_VERSION}_Linux_x86_64.tar.gz && \
+    tar -C /tmp -zoxf /tmp/cloudwatch-exporter.tar.gz && \
+    rm -f /tmp/cloudwatch-exporter.tar.gz && \
+    mv /tmp/yace /yace && \
     mkdir /etc/cloudwatch-exporter && \
-    chmod 0755 /cloudwatch-exporter.jar /bin/entrypoint.sh && \
+    chmod 0755 /yace /bin/entrypoint.sh && \
     chown -R nobody:nogroup /etc/cloudwatch-exporter
 
-EXPOSE 9106
+EXPOSE 5000
 
 ENTRYPOINT [ "/bin/entrypoint.sh" ]

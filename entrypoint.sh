@@ -49,7 +49,4 @@ echo "INFO: Copying cloudwatch-exporter configuration file(s) from ${S3_URI} to 
 aws ${PROFILE_OPTION} s3 cp ${S3_URI}/config.yml /etc/cloudwatch-exporter/config.yml
 
 echo "INFO: Starting cloudwatch-exporter..."
-exec java \
-        -jar /cloudwatch-exporter.jar \
-        9106 \
-        /etc/cloudwatch-exporter/config.yml
+exec /yace -config.file /etc/cloudwatch-exporter/config.yml
