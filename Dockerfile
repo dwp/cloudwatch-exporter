@@ -1,6 +1,6 @@
 FROM alpine:3.12.0
 
-ARG CLOUDWATCH_EXPORTER_VERSION=0.19.1-alpha
+ARG CLOUDWATCH_EXPORTER_VERSION=0.24.0-alpha
 
 COPY entrypoint.sh /bin/entrypoint.sh
 
