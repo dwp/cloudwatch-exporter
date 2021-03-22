@@ -1,6 +1,6 @@
-FROM alpine:3.12.0
+FROM alpine:3.12
 
-ARG CLOUDWATCH_EXPORTER_VERSION=0.24.0-alpha
+ARG CLOUDWATCH_EXPORTER_VERSION=0.26.3-alpha
 
 COPY entrypoint.sh /bin/entrypoint.sh
 
@@ -15,5 +15,6 @@ RUN apk add --update --no-cache aws-cli curl && \
     chown -R nobody:nogroup /etc/cloudwatch-exporter
 
 EXPOSE 5000
+USER nobody:nogroup
 
 ENTRYPOINT [ "/bin/entrypoint.sh" ]
