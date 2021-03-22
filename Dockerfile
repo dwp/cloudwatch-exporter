@@ -1,4 +1,4 @@
-FROM alpine:3.12.0
+FROM alpine:3.12
 
 ARG CLOUDWATCH_EXPORTER_VERSION=0.26.3-alpha
 
