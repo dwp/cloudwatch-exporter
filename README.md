@@ -1,3 +1,5 @@
+# DO NOT USE THIS REPO - MIGRATED TO GITLAB
+
 # cloudwatch-exporter
 
 ## Repo for the DataWorks Cloudwatch Exporter Docker image
